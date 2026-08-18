@@ -3,27 +3,24 @@ class Solution {
     {
         int n = grid.length;
         int m = grid[0].length;
-        int dp[][] = new int[n][m];
+        int prev[] = new int[m];
         for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                dp[i][j] = 0;
-            }
-        }
-        for(int i=0; i<n; i++){
+            int temp[] = new int[m];
             for(int j=0; j<m; j++){
                 if(i == 0 && j == 0)
-                    dp[i][j] = grid[i][j];
+                    temp[j] = grid[i][j];
                 else{
                     int left = (int)1e9;
                     int up = (int)1e9;
                     if(j-1 >= 0)
-                        left = grid[i][j] + dp[i][j-1];
+                        left = grid[i][j] + temp[j-1];
                     if(i-1 >= 0)
-                        up = grid[i][j] + dp[i-1][j];
-                    dp[i][j] = Math.min(left, up);
+                        up = grid[i][j] + prev[j];
+                    temp[j] = Math.min(left, up);
                 }
             }
+            prev = temp;
         }
-        return dp[n-1][m-1];
+        return prev[m-1];
     }
 }
