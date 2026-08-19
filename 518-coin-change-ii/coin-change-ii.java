@@ -1,17 +1,17 @@
 class Solution {
     public int dfs(int coins[], int ind, int amt, int dp[][])
     {
-        if(ind < 0)
-            return 0;
-        if(amt <= 0){
-            if(amt == 0)
+        if(ind <= 0){
+            if(amt % coins[0] == 0)
                 return 1;
             return 0;
         }
         if(dp[ind][amt] != -1)
             return dp[ind][amt];
         int notTake = dfs(coins, ind-1, amt, dp);
-        int take = dfs(coins, ind, amt-coins[ind], dp);
+        int take = 0;
+        if(amt - coins[ind] >= 0)
+            take= dfs(coins, ind, amt-coins[ind], dp);
         dp[ind][amt] = notTake + take;
         return notTake + take;
     }
