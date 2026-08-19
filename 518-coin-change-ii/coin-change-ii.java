@@ -1,30 +1,23 @@
 class Solution {
-    public int dfs(int coins[], int ind, int amt, int dp[][])
-    {
-        if(ind <= 0){
-            if(amt % coins[0] == 0)
-                return 1;
-            return 0;
-        }
-        if(dp[ind][amt] != -1)
-            return dp[ind][amt];
-        int notTake = dfs(coins, ind-1, amt, dp);
-        int take = 0;
-        if(amt - coins[ind] >= 0)
-            take= dfs(coins, ind, amt-coins[ind], dp);
-        dp[ind][amt] = notTake + take;
-        return notTake + take;
-    }
     public int change(int amount, int[] coins)
     {
         int n = coins.length;
-        int dp[][] = new int[n][amount+1];
-        for(int i=0; i<n; i++){
-            for(int j=0; j<amount+1; j++){
-                dp[i][j] = -1;
-            }
+        int prev[] = new int[amount+1];
+        for(int t=0; t<amount+1; t++){
+            if(t % coins[0] == 0)
+                prev[t] = 1;
         }
-        int a = dfs(coins, n-1, amount, dp);
-        return a;
+        for(int i=1; i<n; i++){
+            int current[] = new int[amount+1];
+            for(int t=0; t<amount+1; t++){
+                int notTake = prev[t];
+                int take = 0;
+                if(t - coins[i] >= 0)
+                    take = current[t-coins[i]];
+                current[t] = notTake + take;
+            }
+            prev = current;
+        }
+        return prev[amount];
     }
 }
