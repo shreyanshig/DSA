@@ -9,20 +9,6 @@ class Solution {
         }
         return true;
     }
-    public int dfs(int ind, int n, String s, int dp[])
-    {
-        if(ind >= n)
-            return 0;
-        if(dp[ind] != -1)
-            return dp[ind];
-        int min = (int)1e9;
-        for(int j=ind; j<n; j++){
-            if(isPalin(s, ind, j))
-                min = Math.min(min, 1 + dfs(j+1, n, s, dp));
-        }
-        dp[ind] = min;
-        return min;
-    }
     public int minCut(String s)
     {
         int n = s.length();
