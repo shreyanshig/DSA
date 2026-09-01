@@ -1,8 +1,8 @@
 class Solution {
     public boolean dfs(String s, int i, int j, int n, HashSet<String> hs, int dp[][])
     {
-         if(j >= n){
-            if(i >= n)
+         if(j == n-1){
+            if(hs.contains(s.substring(i , j+1)))
                 return true;
             return false;
          }
