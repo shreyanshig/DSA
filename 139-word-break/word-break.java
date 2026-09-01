@@ -1,19 +1,22 @@
 class Solution {
-    public boolean dfs(String s, int i, int j, int n, HashSet<String> hs, int dp[][])
+    public boolean dfs(String s, int ind, int n, HashSet<String> hs, int dp[])
     {
-         if(j == n-1){
-            if(hs.contains(s.substring(i , j+1)))
-                return true;
-            return false;
+         if(ind == n)
+            return true;
+         if(dp[ind] != -1)
+            return dp[ind] == 1;
+         for(int j=ind; j<n; j++){
+            String word = s.substring(ind, j+1);
+            if(hs.contains(word)){
+                boolean tf = dfs(s, j+1, n, hs, dp);
+                if(tf){
+                    dp[ind] = 1;
+                    return true;
+                }
+            }
          }
-         if(dp[i][j] != -1)
-            return dp[i][j] == 1;
-         boolean notPart = dfs(s, i, j+1, n, hs, dp);
-         boolean part = false;
-         if(hs.contains(s.substring(i, j+1)))
-            part = dfs(s, j+1, j+1, n, hs, dp);
-        dp[i][j] = ((notPart | part) ? 1 : 0);
-        return notPart | part;
+        dp[ind] = 0;
+        return false;
     }
     public boolean wordBreak(String s, List<String> wordDict)
     {
@@ -21,13 +24,11 @@ class Solution {
         for(String temp: wordDict){
             hs.add(temp);
         }
-        int dp[][] = new int[s.length()][s.length()];
+        int dp[] = new int[s.length()];
         for(int i=0; i<s.length(); i++){
-            for(int j=0; j<s.length(); j++){
-                dp[i][j] = -1;
-            }
+           dp[i] = -1;
         }
-        boolean tf = dfs(s, 0, 0, s.length(), hs, dp);
+        boolean tf = dfs(s, 0, s.length(), hs, dp);
         return tf;
     }
 }
