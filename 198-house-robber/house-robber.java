@@ -1,23 +1,14 @@
 class Solution {
-    public int dfs(int nums[], int ind, int n, int dp[])
-    {
-        if(ind >= n)
-            return 0;
-        if(dp[ind] != -1)
-            return dp[ind];
-        int notTake = dfs(nums, ind+1, n, dp);
-        int take = nums[ind] + dfs(nums, ind+2, n, dp);
-        dp[ind] = Math.max(notTake, take);
-        return Math.max(notTake, take);
-    }
     public int rob(int[] nums)
     {
         int n = nums.length;
-        int dp[] = new int[n];
-        for(int i=0; i<n; i++){
-            dp[i] = -1;
+        int dp[] = new int[n+2];
+        dp[n] = 0;
+        for(int ind=n-1; ind>=0; ind--){
+            int notTake = dp[ind+1];
+            int take = nums[ind] + dp[ind+2];
+            dp[ind] = Math.max(notTake, take);
         }
-        int a = dfs(nums, 0, n, dp);
-        return a;
+        return dp[0];
     }
 }
