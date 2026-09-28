@@ -3,23 +3,24 @@ class Solution {
     {
         int n = obstacleGrid.length;
         int m = obstacleGrid[0].length;
-        if(obstacleGrid[0][0] == 1 || obstacleGrid[n-1][m-1] == 1)
-            return 0;
         int dp[][] = new int[n][m];
-        dp[n-1][m-1] = 1;
-        for(int row=n-1; row>=0; row--){
-            for(int col=m-1; col>=0; col--){
-                if(row == n-1 && col == m-1)
-                    continue;
-                int right = 0;
-                if(col + 1 < m && obstacleGrid[row][col+1] == 0)
-                    right = dp[row][col+1];
-                int down = 0;
-                if(row + 1 < n && obstacleGrid[row+1][col] == 0)
-                    down = dp[row+1][col];
-                dp[row][col] = right + down;
+        for(int row=0; row<n; row++){
+            for(int col=0; col<m; col++){
+                if(obstacleGrid[row][col] == 1)
+                    dp[row][col] = 0;
+                else if(row == 0 && col == 0)
+                    dp[row][col] = 1;
+                else{
+                    int left = 0;
+                    if(col-1 >= 0)
+                        left = dp[row][col-1];
+                    int up = 0;
+                    if(row-1 >= 0)
+                        up = dp[row-1][col];
+                    dp[row][col] = left + up;
+                }
             }
         }
-        return dp[0][0];
+        return dp[n-1][m-1];
     }
 }
